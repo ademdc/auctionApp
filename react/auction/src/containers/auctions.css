@@ -1,0 +1,13 @@
+.Auctions {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+}
+
+.Container {
+    margin:auto 0;
+    padding: 30px;
+    text-align: center;
+}

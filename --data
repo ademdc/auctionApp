@@ -1,0 +1,5 @@
+{"id":["This field is required."],"name":["This field is required."],"password":["This field is required."]}--_curl_--
+>   "username": "user1"
+--_curl_--
+>   "password": "hunter2"
+> 
