@@ -8,11 +8,10 @@ import './newAuction.css';
 class newAuction extends Component {
 
     state = {
-        'owner_id':'',
+        'owner_id':this.props.user.id,
         'item':'',
         'image':'',
         'starting_bid':'',
-        'starting_time':'',
         'ending_time':'',
         'submited':false
     };
@@ -21,8 +20,9 @@ class newAuction extends Component {
 
     onSubmit = e => {
         e.preventDefault();
+        this.setState({owner_id:this.props.user.id});
         this.setState({submited:true})
-        this.props.newAuction(this.state.owner_id, this.state.item,this.state.image,this.state.starting_bid,this.state.starting_time,this.state.ending_time);
+        this.props.newAuction(this.state.owner_id, this.state.item,this.state.image,this.state.starting_bid,this.state.ending_time);
     };
 
 
@@ -32,7 +32,6 @@ class newAuction extends Component {
         // if (this.props.isAuthenticated) {
         //     return <Redirect to="/" />
         // }
-        this.setState({owner_id:this.props.user.id});
 
         if(this.state.submited===true){
            return <Redirect to="/" />
@@ -76,12 +75,6 @@ class newAuction extends Component {
                             onChange={e => this.setState({starting_bid: e.target.value})} />
                     </p>
                     <p>
-                        <label htmlFor="starting">Starting time  </label>
-                        <input
-                            type="text" id="starting"
-                            onChange={e => this.setState({starting_time: e.target.value})} />
-                    </p>
-                    <p>
                         <label htmlFor="ending">Ending time </label>
                         <input
                             type="text" id="ending"
@@ -117,8 +110,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        newAuction: (owner_id, item, image, starting_bid, starting_time, ending_time) => {
-            return dispatch(auctions.postAuction(owner_id, item, image, starting_bid, starting_time, ending_time));
+        newAuction: (owner_id, item, image, starting_bid, ending_time) => {
+            return dispatch(auctions.postAuction(owner_id, item, image, starting_bid, ending_time));
         }
     };
 }

@@ -5,7 +5,7 @@ import axios from 'axios';
 import Auction from '../components/auction/auction';
 
 import './auctions.css';
-import {auth} from "../reducers/actions";
+import {auth,auctions} from "../reducers/actions";
 import { connect } from "react-redux";
 import {Link} from "react-router-dom";
 
@@ -22,6 +22,7 @@ class Auctions extends Component {
                 const users = response.data.slice(0, 4);
                 const updatedUsers = users.map(post => {
                     return {
+
                         ...post
                     }
                 });
@@ -63,6 +64,7 @@ class Auctions extends Component {
                     ending_time={auction.ending_time}
                     image={auction.image}
                     owner_id={auction.winner_id}
+                    bid={this.props.bid}
                 />;
             });
         }
@@ -92,6 +94,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         logout: () => dispatch(auth.logout()),
+        bid: (id, newbid) => dispatch(auctions.bid(id, newbid))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Auctions)
