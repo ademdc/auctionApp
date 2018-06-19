@@ -13,82 +13,74 @@ class newAuction extends Component {
         'image':'',
         'starting_bid':'',
         'ending_time':'',
-        'submited':false
+        'submited':false,
+        'message':''
     };
 
 
 
     onSubmit = e => {
         e.preventDefault();
+        e.target.reset();
         this.setState({owner_id:this.props.user.id});
         this.setState({submited:true})
         this.props.newAuction(this.state.owner_id, this.state.item,this.state.image,this.state.starting_bid,this.state.ending_time);
+        this.setState({message:"Successfully made an auction"});
+
     };
 
 
 
-
     render() {
-        // if (this.props.isAuthenticated) {
-        //     return <Redirect to="/" />
-        // }
-
+        if (!this.props.isAuthenticated) {
+            return <Redirect to="/" />
+        }
+        let success = null;
+        let auctionImage = null
         if(this.state.submited===true){
-           return <Redirect to="/" />
+            success=(
+                <div className="alert alert-success" role="alert">
+                <strong>{this.state.message}</strong>
+                </div>);
+            auctionImage=(
+                    <img src={this.state.image} alt="auction"/>
+            );
         }
 
-        console.log(this.props.user.id+" id");
+
         return (
 
             <div className="NewAuction">
+                <h1>New Auction</h1>
+                <div className="container">
+                    <div className="card card-container">
+                        <form className="form-signin" onSubmit={this.onSubmit}>
+                            {this.props.errors.length > 0 && (
+                                <ul>
+                                    {this.props.errors.map(error => (
+                                        <li key={error.field}>{error.message}</li>
+                                    ))}
+                                </ul>
+                            )}
+                            {success}
+                            {auctionImage}
 
+                            <input type="text" id="inputEmail" className="form-control" placeholder="Item"
+                                   required onChange={e => this.setState({item: e.target.value})} />
+                            <input type="text" id="inputPassword" className="form-control"
+                                   placeholder="Image (URL)" required onChange={e => this.setState({image: e.target.value})}/>
+                            <input type="number" id="startingBid" className="form-control"
+                                   placeholder="Starting bid" required onChange={e => this.setState({starting_bid: e.target.value})}/>
+                            <input type="date" id="endingTime" className="form-control"
+                                   placeholder="Ending time" required onChange={e => this.setState({ending_time: e.target.value+"T00:00Z"})}/>
 
-            <form onSubmit={this.onSubmit}>
-                <div className="UserName">
-                   Welcome {this.props.user.username}
+                            <button className="btn btn-lg btn-primary btn-block btn-signin" type="submit">Submit</button>
+                        </form>
+                        <Link to='/'>Go back</Link>
+                    </div>
+
                 </div>
-                <fieldset>
-                    <legend>Bid</legend>
-                    {this.props.errors.length > 0 && (
-                        <ul>
-                            {this.props.errors.map(error => (
-                                <li key={error.field}>{error.message}</li>
-                            ))}
-                        </ul>
-                    )}
-                    <p>
-                        <label htmlFor="username">Item</label>
-                        <input
-                            type="text" id="item"
-                            onChange={e => this.setState({item: e.target.value})} />
-                    </p>
-                    <p>
-                        <label htmlFor="picture">Picture (url) </label>
-                        <input
-                            type="text" id="picutre"
-                            onChange={e => this.setState({image: e.target.value})} />
-                    </p>
-                    <p>
-                        <label htmlFor="bid">Starting bid  </label>
-                        <input
-                            type="number" id="bid"
-                            onChange={e => this.setState({starting_bid: e.target.value})} />
-                    </p>
-                    <p>
-                        <label htmlFor="ending">Ending time </label>
-                        <input
-                            type="text" id="ending"
-                            onChange={e => this.setState({ending_time: e.target.value})} />
-                    </p>
-                    <p>
-                        <button type="submit">Make auction</button>
-                    </p>
-                    <p>
-                        <Link to="/">Go back</Link>
-                    </p>
 
-                </fieldset>
-            </form>
             </div>
         )
     }

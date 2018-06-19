@@ -1,7 +1,6 @@
 .Auction {
     width: 60%;
     padding: 16px;
-    text-align: center;
     border: 1px solid #eee;
     box-shadow: 0 2px 3px #ccc;
     margin: 10px;
@@ -20,4 +19,7 @@
 }
 .auctionImage{
     height:50px;
+}
+.card{
+    height: 100%;
 }

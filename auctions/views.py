@@ -3,9 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Users,Auctions
-from .serializers import UsersSerializer, AuctionSerializer
+from .serializers import UsersSerializer, AuctionSerializer,BidSerializer
 from django.contrib.auth.models import User
 from rest_framework import generics
+from knox.auth import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 #List all stocks or creates new ones
@@ -38,15 +40,37 @@ class AuctionList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) \
+
+
+class AuctionBid(APIView):
+
+    # def get(self, request, id, format=None):
+    #     bid = self.get_object(id)
+    #     serializer = AuctionSerilizer(bid)
+    #     return Response(serializer.data)
+
+    def get(self, request, id):
+        auction = Auctions.objects.filter(id=id)
+        serializer = AuctionSerializer(auction, many=True)
+        return Response(serializer.data)
+
+    def put(self, request, id, format=None):
+        auction = Auctions.objects.get(id=id)
+        serializer = BidSerializer(auction, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Logout(APIView):
-    queryset = User.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
-    def get(self, request, format=None):
-        # simply delete the token to force a login
-        request.user.auth_token.delete()
-        return Response(status=status.HTTP_200_OK)
+    def post(self, request, format=None):
+        request._auth.delete()
+        user_logged_out.send(sender=request.user.__class__, request=request, user=request.user)
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 class UpdateBid(generics.UpdateAPIView):
     queryset = Auctions.objects.all()

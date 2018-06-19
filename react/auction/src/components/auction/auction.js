@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import './auction.css';
 import Countdown from 'react-countdown-now';
+import {Link} from 'react-router-dom';
 
 class auction extends Component {
     state ={
@@ -9,7 +10,11 @@ class auction extends Component {
     }
     onSubmit = e => {
         e.preventDefault();
-        this.props.bid(this.props.id, this.state.bid);
+        console.log("id "+this.props.id);
+        console.log("bid "+this.state.bid);
+        console.log("winnerID "+this.props.newWinner);
+
+        this.props.bid(this.props.id, this.state.bid, this.props.newWinner);
     };
 
     render() {
@@ -22,31 +27,37 @@ class auction extends Component {
 
 
 
-
         if (today > auctionTime) {
-            return (<article className="Auction">
-                <h1>{this.props.item}</h1>
-                <div className="Info">
-                    <div className="Name">{this.props.id}</div>
+            return (<div className="col-lg-3 col-md-6 mb-4">
+                <div className="card">
+                    <img className="card-img-top" src={this.props.image} alt=""/>
+                    <div className="card-body">
+                        <h4 className="card-title">{this.props.item}</h4>
+                        <h3>Auction finished</h3>
+                        <p>Highest bid <b> {this.props.highest_bid} KM</b></p>
+                        <p>Auction won user with id: {this.props.owner_id}</p>
+                    </div>
+
                 </div>
-                <img className="auctionImage" src={this.props.image} alt="slika"/>
-                <h3>Auction finished</h3>
-                <p>Highest bid <b> {this.props.highest_bid} KM</b></p>
-                <p>Auction won user with id: {this.props.owner_id}</p>
-            </article>);
+            </div>);
         }
         if (today < auctionTime) {
             return (
-                    <article className="Auction">
-                        <h1>{this.props.item}</h1>
-                        <img className="auctionImage" src={this.props.image} alt="slika"/>
-                        <p>Time left <b><Countdown date={this.props.ending_time}/></b></p>
-                        <p>Highest bid <b> {this.props.highest_bid} KM</b></p>
-                        <form onSubmit={this.onSubmit}>
-                        <input type="number" onChange={e => this.setState({bid: e.target.value})}/>
-                        <button className="btn btn-success">Bid</button>                </form>
-
-                    </article>
+                    <div className="col-lg-3 col-md-6 mb-4">
+                        <div className="card">
+                            <Link to={"/"+this.props.id}>
+                            <img className="card-img-top" src={this.props.image} alt=""/>
+                            </Link>
+                            <div className="card-body">
+                                <h4 className="card-title">{this.props.item}</h4>
+                                <p>Highest bid <b> {this.props.highest_bid} KM</b></p>
+                            </div>
+                            <div className="card-footer">
+                                <Link className='btn btn-success btn-block' to={"/"+this.props.id}>Bid</Link>
+                                <p>Time left <b><Countdown date={this.props.ending_time}/></b></p>
+                            </div>
+                        </div>
+                    </div>
             );
         }
 

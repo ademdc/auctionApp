@@ -18,7 +18,7 @@ class Auctions(models.Model):
     starting_bid =  models.IntegerField()
     starting_time = models.DateTimeField(auto_now_add=True)
     ending_time = models.DateTimeField()
-    highest_bid = models.FloatField(null=True)
+    highest_bid = models.FloatField(null=True, default=0)
     winner_id = models.IntegerField(null=True)
 
 

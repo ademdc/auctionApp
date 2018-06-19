@@ -6,6 +6,8 @@ export const loadUser = () => {
 
         let headers = {
             "Content-Type": "application/json",
+            'Access-Control-Allow-Origin' : '*',
+
         };
 
         if (token) {
@@ -36,7 +38,8 @@ export const loadUser = () => {
 
 export const login = (username, password) => {
     return (dispatch, getState) => {
-        let headers = {"Content-Type": "application/json"};
+        let headers = {"Content-Type": "application/json", 'Access-Control-Allow-Origin' : '*',
+        };
         let body = JSON.stringify({username, password});
 
         return fetch("http://localhost:8000/api/auth/login/", {headers, body, method: "POST"})
@@ -100,7 +103,7 @@ export const logout = () => {
     return (dispatch, getState) => {
         let headers = {"Content-Type": "application/json"};
 
-        return fetch("http://localhost:8000/api/auth/logout/", {headers, body: "", method: "POST"})
+        return fetch("http://localhost:8000/api/auth/logout/", {headers,body:'', method: "POST"})
             .then(res => {
                 if (res.status === 204) {
                     return {status: res.status, data: {}};

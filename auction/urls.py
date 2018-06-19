@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^users/', views.UsersList.as_view()),
     url(r'^auctions/', views.AuctionList.as_view()),
+    url(r'^auction/(?P<id>[0-9]+)', views.AuctionBid.as_view()),
+    url(r'^logout/', views.Logout.as_view()),
     url(r'^api/auth/', include('knox.urls')),
 
 ]

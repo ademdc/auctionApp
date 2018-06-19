@@ -11,3 +11,8 @@
     padding: 30px;
     text-align: center;
 }
+
+.subheader{
+    text-align: right;
+    display: inline;
+}

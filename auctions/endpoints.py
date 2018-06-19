@@ -13,4 +13,5 @@ urlpatterns = [
     url("^auth/user/$", UserAPI.as_view()),
     url("^auth/logout/$", LogoutAPI.as_view()),
 
+
 ]

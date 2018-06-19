@@ -30,16 +30,19 @@ class LoginUserSerializer(serializers.Serializer):
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
-        # fields = ('id','name')
         fields = '__all__'
 
 class AuctionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Auctions
-        # fields = ('id','name')
         fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username')
+
+class BidSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Auctions
+        fields = ('id', 'highest_bid', 'winner_id')

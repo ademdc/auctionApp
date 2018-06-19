@@ -11,6 +11,11 @@ import thunk from "redux-thunk";
 import {auth} from "./reducers/actions";
 import Register from './components/Register/register.js';
 import NewAuction from './components/auction/newAuction';
+import Redirecting from './helpers/redirect';
+import FullAuction from './components/auction/fullAuction';
+import Finished from './components/auction/finished/finished';
+import Active from './components/auction/active/active';
+import Winning from './components/auction/winning/winning';
 
 let store = createStore(auctions, applyMiddleware(thunk));
 
@@ -42,6 +47,11 @@ class RootContainerComponent extends Component {
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/register" component={Register} />
                         <Route exact path="/newauction" component={NewAuction} />
+                        <Route exact path="/redirect" component={Redirecting} />
+                        <Route exact path="/finished" component={Finished} />
+                        <Route exact path="/active" component={Active} />
+                        <Route exact path="/winning" component={Winning} />
+                        <Route exact path="/:id" component={FullAuction} />
                         <Route component={NotFound} />
                     </Switch>
                 </BrowserRouter>
